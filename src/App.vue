@@ -8,6 +8,7 @@
                     <div class="form-group">
                         <label for="title">Title</label>
                         <input type="text" class="form-control" id="title" v-model.trim="post.title">
+                        <!-- v-model similar to @input="post.title = $event.target.value"; .lazy would be `@change` -->
                     </div>
 
                     <div class="form-group">
@@ -16,14 +17,15 @@
                     </div>
 
                     <div class="form-group">
-                        <input type="checkbox" id="publish-immediately" v-model="post.publishImmediately">
-                        <label for="publish-immediately">Publish immediately</label>
+                        <input type="checkbox" label="publish-immediately" v-model="post.publishImmediately">
+                        <!-- <input type="checkbox" label="publish-immediately" v-model="post.publishImmediately" true-value="immediately" false-value="later"> -->
+                        <label for="publish-immediately">Publish Immediately</label>
                     </div>
 
                     <div class="form-group">
                         <label>Share on</label>
 
-                        <div v-for="media in formData.socialMedia">
+                        <div v-for="(media, i) in formData.socialMedia" :key="i">
                             <input type="checkbox" :id="media" :value="media" v-model="post.shareOn">
                             <label :for="media">{{ media }}</label>
                         </div>
@@ -32,22 +34,24 @@
                     <div class="form-group">
                         <label>Category</label>
 
-                        <div v-for="category in formData.categories">
+                        <div v-for="(category, i) in formData.categories" :key="i">
                             <input type="radio" :id="category" :value="category" v-model="post.category">
                             <label :for="category">{{ category }}</label>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="select-series">Series</label>
-
+                        <label>Series</label>
                         <select class="form-control" id="select-series" v-model="post.series">
-                            <option value="">Choose Series</option>
-                            <option v-for="series in formData.series" :value="series">{{ series }}</option>
+                            <option value="">Choose series</option>
+                            <option v-for="(series, i) in formData.series" :key="i" :value="series">
+                                {{ series }}
+                            </option>
                         </select>
                     </div>
 
                     <input type="submit" class="btn btn-primary" value="Publish">
+
                 </form>
 
                 <hr>
@@ -76,7 +80,7 @@
                             <td>Share on</td>
                             <td>
                                 <ul>
-                                    <li v-for="media in post.shareOn">{{ media }}</li>
+                                    <li v-for="(media, i) in post.shareOn" :key="i">{{ media }}</li>
                                 </ul>
                             </td>
                         </tr>
@@ -104,7 +108,7 @@
                     title: '',
                     content: '',
                     publishImmediately: true,
-                    shareOn: ['Facebook'],
+                    shareOn: ['Twitter'],
                     category: 'Backend',
                     series: 'Complete Guide to Elasticsearch'
                 },
